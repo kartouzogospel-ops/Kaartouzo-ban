@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KARTOUZO // REPORT CENTER</title>
+
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --cyan: #00e5ff;
+  --cyan-dark: #006680;
+  --bg: #050a10;
+  --card-bg: rgba(10, 16, 25, 0.85);
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: #e8f4f8;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Fond animé avec un effet de grille et de lueur */
+.bg-effect {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background-image: 
+    linear-gradient(rgba(0, 229, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 229, 255, 0.05) 1px, transparent 1px);
+  background-size: 30px 30px;
+  background-position: center;
+  mask-image: radial-gradient(circle at center, #000 0%, transparent 80%);
+  -webkit-mask-image: radial-gradient(circle at center, #000 0%, transparent 80%);
+}
+
+.bg-effect::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle at 50% 50%, rgba(0, 229, 255, 0.08) 0%, transparent 60%);
+  animation: rotate 20s linear infinite;
+}
+
+@keyframes rotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.app {
+  width: 100%;
+  max-width: 680px;
+  margin: auto;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.title {
+  font-size: clamp(28px, 8vw, 46px);
+  font-weight: 900;
+  letter-spacing: 4px;
+  color: #fff;
+  text-transform: uppercase;
+  text-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan-dark);
+  animation: neonPulse 2s ease-in-out infinite;
+}
+
+@keyframes neonPulse {
+  0%, 100% { text-shadow: 0 0 15px var(--cyan), 0 0 30px var(--cyan-dark); }
+  50% { text-shadow: 0 0 25px var(--cyan), 0 0 50px var(--cyan-dark); }
+}
+
+.subtitle {
+  color: var(--cyan);
+  font-size: 11px;
+  margin-top: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.panel {
+  background: var(--card-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 12px;
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0, 229, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+}
+
+.panel::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--cyan), transparent);
+  opacity: 0.5;
+}
+
+label {
+  color: var(--cyan);
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: -8px;
+}
+
+input, select, textarea {
+  width: 100%;
+  padding: 14px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #fff;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+  background: rgba(0, 229, 255, 0.05);
+}
+
+textarea { resize: vertical; min-height: 100px; }
+
+.btn {
+  padding: 16px;
+  border: none;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--cyan), #0099cc);
+  color: #000;
+  box-shadow: 0 0 20px rgba(0, 229, 255, 0.3);
+  margin-top: 10px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(0, 229, 255, 0.6);
+}
+
+.btn-secondary {
+  background: rgba(0, 229, 255, 0.05);
+  color: var(--cyan);
+  border: 1px solid var(--cyan);
+}
+
+.btn-secondary:hover {
+  background: rgba(0, 229, 255, 0.15);
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+}
+
+.note {
+  font-size: 10px;
+  color: #88a0b0;
+  line-height: 1.5;
+  text-align: center;
+  margin-top: 10px;
+}
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  color: #445566;
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+</style>
+</head>
+
+<body>
+<div class="bg-effect"></div>
+
+<div class="app">
+  <header>
+    <h1 class="title">Kartouzo</h1>
+    <p class="subtitle">Report Center // K.G.M</p>
+  </header>
+
+  <main class="panel">
+    <div style="text-align: center; color: #00e5ff; font-size: 12px; margin-bottom: 10px;">
+      ● SYSTÈME DE GÉNÉRATION ACTIF
+    </div>
+
+    <label>Numéro WhatsApp concerné</label>
+    <input id="number" type="tel" placeholder="+243...">
+
+    <label>Catégorie du signalement</label>
+    <select id="reason">
+      <option value="Spam / Comportement suspect">Spam / Comportement suspect</option>
+      <option value="Arnaque / Fraude">Arnaque / Fraude</option>
+      <option value="Harcèlement / Menaces">Harcèlement / Menaces</option>
+      <option value="Usurpation d'identité">Usurpation d'identité</option>
+      <option value="Contenu illégal">Contenu illégal</option>
+    </select>
+
+    <label>Description (Laisse vide pour générer)</label>
+    <textarea id="description" placeholder="Si tu laisses ce champ vide, le système générera un texte de signalement puissant et professionnel pour toi."></textarea>
+
+    <button class="btn btn-primary" onclick="generateReport()">
+      ⚡ GÉNÉRER LE RAPPORT
+    </button>
+
+    <button class="btn btn-secondary" onclick="openWhatsAppForm()">
+      📲 OUVRIR LE SUPPORT OFFICIEL
+    </button>
+    
+    <p class="note">
+      Le bouton ouvre le formulaire officiel de WhatsApp. 
+      Colle le rapport généré, remplis ton email, et envoie.
+    </p>
+  </main>
+
+  <!-- SIGNATURE MODIFIÉE ICI -->
+  <footer>Dev Kartouzo | K.G.M</footer>
+</div>
+
+<script>
+// ⚠️ TON EMAIL EST CACHÉ ICI. IL N'APPARAÎT PAS SUR L'ÉCRAN.
+const MY_HIDDEN_EMAIL = "kartouzogospel@gmail.com";
+
+function generateReport() {
+  const num = document.getElementById("number").value.trim();
+  const reason = document.getElementById("reason").value;
+  const desc = document.getElementById("description").value.trim();
+
+  if (!num) {
+    alert("Il faut remplir le numéro cible !");
+    return;
+  }
+
+  let finalDesc = desc;
+  
+  if (!finalDesc) {
+    const templates = {
+      "Spam / Comportement suspect": `Je souhaite signaler le numéro ${num} pour envoi massif de messages non sollicités. Ce compte contacte des utilisateurs inconnus de manière répétée et automatisée, ce qui constitue une violation directe des conditions d'utilisation de WhatsApp.`,
+      "Arnaque / Fraude": `Je signale le numéro ${num} pour tentative d'arnaque. Ce compte utilise des techniques de manipulation pour obtenir des informations personnelles ou financières. Son comportement est frauduleux et dangereux pour les utilisateurs.`,
+      "Harcèlement / Menaces": `Je signale le numéro ${num} pour harcèlement et menaces. Ce compte envoie des messages insistants, intimidants et menaçants. Je me sens en danger et je demande une intervention rapide de WhatsApp.`,
+      "Usurpation d'identité": `Je signale le numéro ${num} pour usurpation d'identité. Ce compte se fait passer pour une autre personne ou entité afin de tromper les utilisateurs. C'est une violation grave des règles de la plateforme.`,
+      "Contenu illégal": `Je signale le numéro ${num} pour diffusion de contenu illégal. Ce compte partage des éléments qui violent les lois en vigueur et les conditions d'utilisation de WhatsApp.`
+    };
+    finalDesc = templates[reason] || `Je signale le numéro ${num} pour comportement suspect.`;
+  }
+
+  const report = `RAPPORT DE SIGNALEMENT\n\nNuméro concerné : ${num}\nCatégorie : ${reason}\n\nDescription :\n${finalDesc}\n\n---\nGénéré par Kartouzo Report Center`;
+
+  navigator.clipboard.writeText(report).then(() => {
+    alert("✅ Rapport généré et copié dans le presse-papiers !\n\n1. Clique sur 'Ouvrir le support officiel'.\n2. Colle le texte dans le formulaire.\n3. Remplis avec ton email et envoie.");
+  }).catch(() => {
+    const ta = document.createElement("textarea");
+    ta.value = report;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+    alert("✅ Rapport copié ! Colle-le dans le formulaire WhatsApp.");
+  });
+}
+
+function openWhatsAppForm() {
+  window.open("https://www.whatsapp.com/contact/", "_blank");
+}
+</script>
+
+</body>
+</html>
